@@ -1,17 +1,20 @@
 resource "aws_security_group" "elb" { 
   name = "terraform-secgroup-elb" 
+
   ingress { 
     from_port   = "${var.elb_port}" 
     to_port     = "${var.elb_port}" 
     protocol    = "tcp" 
     cidr_blocks = [ "0.0.0.0/0" ] 
   }
+
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
   lifecycle { 
     create_before_destroy = true 
   } 
@@ -19,12 +22,14 @@ resource "aws_security_group" "elb" {
 
 resource "aws_security_group" "web" { 
   name = "terraform-secgroup-web" 
+ 
   ingress { 
     from_port = "${var.server_port}" 
     to_port = "${var.server_port}" 
     protocol = "tcp" 
     cidr_blocks = [ "0.0.0.0/0" ] 
   } 
+  
   lifecycle { 
     create_before_destroy = true 
   } 
@@ -39,6 +44,7 @@ resource "aws_route53_record" "web" {
   zone_id = "${data.aws_route53_zone.primary.zone_id}"
   name    = "${var.elb_record}.${var.elb_domain}"
   type    = "A"
+  
   alias {
     name                   = "${aws_elb.web.dns_name}"
     zone_id                = "${aws_elb.web.zone_id}"
@@ -92,18 +98,23 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_autoscaling_group" "web" {
+  name = "${var.cluster_name}-${aws_launch_configuration.web.name}"
+
   launch_configuration       = "${aws_launch_configuration.web.id}"
   availability_zones         = "${data.aws_availability_zones.available.names}"
+  health_check_type          = "ELB"
+  load_balancers             = [ "${aws_elb.web.name}" ]
+
   min_size                   = "${var.min_instance_count}"
   max_size                   = "${var.max_instance_count}"
   min_elb_capacity           = "${var.min_instance_count}"
-  health_check_type          = "ELB"
-  load_balancers             = ["${aws_elb.web.name}"]
+  
   tag { 
     key = "Name" 
-    value = "terraform-edu-web" 
+    value = "${var.cluster_name}" 
     propagate_at_launch = true 
   }
+
   lifecycle {
     create_before_destroy = true
   }
@@ -111,6 +122,7 @@ resource "aws_autoscaling_group" "web" {
 
 data "template_file" "user_data" { 
   template = "${file("${path.module}/user-data.sh")}" 
+  
   vars = { 
     server_port = "${var.server_port}"
   } 
