@@ -1,6 +1,8 @@
 #!/bin/bash 
 cat <<EOF > index.html
-<p><b>Hostname:</b> `hostname`</p>
+<p><b>Host name:</b> `hostname`</p>
+<br>
+<p><b>Host info:</b> `uname -a`</p>
 <br>
 EOF
 
