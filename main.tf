@@ -42,7 +42,7 @@ data "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "web" {
   zone_id = "${data.aws_route53_zone.primary.zone_id}"
-  name    = "${var.elb_record}.${var.elb_domain}"
+  name    = "${var.cluster_name}.${var.elb_domain}"
   type    = "A"
   
   alias {

@@ -13,11 +13,6 @@ variable "elb_domain" {
   description = "The domain for the load balancer"
 }
 
-variable "elb_record" {
-  type        = string
-  description = "The record to be applied to domain"
-}
-
 variable "min_instance_count" {
   type        = number
   description = "Min instances provisioned by ASG"
