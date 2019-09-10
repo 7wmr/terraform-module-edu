@@ -1,5 +1,5 @@
 resource "aws_security_group" "elb" { 
-  name = "terraform-secgroup-elb" 
+  name = "${var.cluster_name}-secgroup-elb" 
 
   ingress { 
     from_port   = "${var.elb_port}" 
@@ -21,7 +21,7 @@ resource "aws_security_group" "elb" {
 }
 
 resource "aws_security_group" "web" { 
-  name = "terraform-secgroup-web" 
+  name = "${var.cluster_name}-secgroup-web" 
  
   ingress { 
     from_port = "${var.server_port}" 
@@ -53,7 +53,7 @@ resource "aws_route53_record" "web" {
 }
 
 resource "aws_elb" "web" {
-  name               = "terraform-elb-web"
+  name               = "${var.cluster_name}-elb"
   availability_zones = "${data.aws_availability_zones.available.names}"
   security_groups    = ["${aws_security_group.elb.id}"]
  
@@ -85,7 +85,7 @@ resource "aws_elb" "web" {
   connection_draining_timeout = 400
 
   tags = {
-    Name = "terraform-elb-web"
+    Name = "${var.cluster_name}-elb"
   }
 
   lifecycle {
@@ -111,7 +111,7 @@ resource "aws_autoscaling_group" "web" {
   
   tag { 
     key = "Name" 
-    value = "${var.cluster_name}" 
+    value = "${var.cluster_name}-instance" 
     propagate_at_launch = true 
   }
 
