@@ -151,7 +151,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_launch_configuration" "web" { 
-  image_id = "${aws_ami.ubuntu.id}"
+  image_id = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.micro" 
   security_groups = [ "${aws_security_group.web.id}" ] 
   user_data = "${data.template_file.user_data.rendered}" 
