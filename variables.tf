@@ -1,3 +1,8 @@
+variable "aws_region" {
+  type        = string
+  description = "AWS region to be used"
+}
+
 variable "server_port" {
   type        = number
   description = "The instance port"

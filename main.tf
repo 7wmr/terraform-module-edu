@@ -128,8 +128,30 @@ data "template_file" "user_data" {
   } 
 }
 
+data "aws_ami" "ubuntu" { 
+    most_recent = true 
+    owners = [ "099720109477" ] # Canonical 
+
+    filter { 
+        name = "virtualization-type" 
+        values = [ "hvm" ] 
+    } 
+    filter { 
+        name = "architecture" 
+        values = [ "x86_64" ] 
+    } 
+    filter { 
+        name = "image-type" 
+        values = [ "machine" ] 
+    } 
+    filter { 
+        name = "name" 
+        values = [ "ubuntu/ images/ hvm-ssd/ ubuntu-*-18.04-amd64-server-*" ] 
+    } 
+}
+
 resource "aws_launch_configuration" "web" { 
-  image_id = "ami-077a5b1762a2dde35" 
+  image_id = "${aws_ami.ubuntu.id}"
   instance_type = "t2.micro" 
   security_groups = [ "${aws_security_group.web.id}" ] 
   user_data = "${data.template_file.user_data.rendered}" 
