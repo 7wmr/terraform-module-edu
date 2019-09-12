@@ -107,7 +107,7 @@ resource "aws_autoscaling_group" "web" {
 
   min_size                   = var.asg.min_size
   max_size                   = var.asg.max_size
-  min_elb_capacity           = var.asg.min_size"
+  min_elb_capacity           = var.asg.min_size
   
   tag { 
     key = "Name" 
