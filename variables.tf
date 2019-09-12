@@ -20,7 +20,7 @@ variable "elb_domain" {
 
 variable "asg" {
   type         = object({
-    min_size   = number
+    min_size   = string
     max_size   = number
   })
 
