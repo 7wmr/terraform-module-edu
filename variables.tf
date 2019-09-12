@@ -18,12 +18,12 @@ variable "elb_domain" {
   description = "The domain for the load balancer"
 }
 
-variable "min_instance_count" {
+variable "asg_min_size" {
   type        = number
   description = "Min instances provisioned by ASG"
 }
 
-variable "max_instance_count" {
+variable "asg_max_size" {
   type        = number
   description = "Max instances provisioned by ASG"
 }

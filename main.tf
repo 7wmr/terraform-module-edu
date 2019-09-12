@@ -105,9 +105,9 @@ resource "aws_autoscaling_group" "web" {
   health_check_type          = "ELB"
   load_balancers             = [ "${aws_elb.web.name}" ]
 
-  min_size                   = "${var.min_instance_count}"
-  max_size                   = "${var.max_instance_count}"
-  min_elb_capacity           = "${var.min_instance_count}"
+  min_size                   = "${var.asg_min_size}"
+  max_size                   = "${var.asg_max_size}"
+  min_elb_capacity           = "${var.asg_min_size}"
   
   tag { 
     key = "Name" 
