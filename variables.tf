@@ -18,22 +18,17 @@ variable "elb_domain" {
   description = "The domain for the load balancer"
 }
 
-variable "asg_min_size" {
-  type        = number
-  description = "Min instances provisioned by ASG"
-}
+variable "asg" {
+  type         = object({
+    min_size   = number
+    max_size   = number
+  })
 
-variable "asg_max_size" {
-  type        = number
-  description = "Max instances provisioned by ASG"
-}
-
-variable "asg_args" {
-  type         = map
   description  = "Auto scaling group arguments"
+
   default      = {
-    "min_size" = 2
-    "max_size" = 10
+    min_size   = null
+    max_size   = null
   }
 }
 
