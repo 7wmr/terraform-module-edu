@@ -2,8 +2,8 @@ resource "aws_security_group" "elb" {
   name = "${var.cluster_name}-secgroup-elb" 
 
   ingress { 
-    from_port   = "${var.elb_port}" 
-    to_port     = "${var.elb_port}" 
+    from_port   = "${var.elb.port}" 
+    to_port     = "${var.elb.port}" 
     protocol    = "tcp" 
     cidr_blocks = [ "0.0.0.0/0" ] 
   }
@@ -36,13 +36,13 @@ resource "aws_security_group" "web" {
 }
 
 data "aws_route53_zone" "primary" {
-  name         = "${var.elb_domain}."
+  name         = "${var.elb.domain}."
   private_zone = false
 }
 
 resource "aws_route53_record" "web" {
   zone_id = "${data.aws_route53_zone.primary.zone_id}"
-  name    = "${var.cluster_name}.${var.elb_domain}"
+  name    = "${var.cluster_name}.${var.elb.domain}"
   type    = "A"
   
   alias {
@@ -67,7 +67,7 @@ resource "aws_elb" "web" {
   listener {
     instance_port     = "${var.server_port}"
     instance_protocol = "http"
-    lb_port           = "${var.elb_port}"
+    lb_port           = "${var.elb.port}"
     lb_protocol       = "http"
   }
 
