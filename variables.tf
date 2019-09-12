@@ -19,10 +19,10 @@ variable "elb_domain" {
 }
 
 variable "asg" {
-  type         = map(object({
+  type         = object({
     min_size   = number
     max_size   = number
-  }))
+  })
 
   description  = "Auto scaling group arguments"
 
