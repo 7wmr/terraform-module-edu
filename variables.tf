@@ -28,6 +28,15 @@ variable "asg_max_size" {
   description = "Max instances provisioned by ASG"
 }
 
+variable "asg_args" {
+  type         = map
+  description  = "Auto scaling group arguments"
+  default      = {
+    "min_size" = 2
+    "max_size" = 10
+  }
+}
+
 variable "cluster_name" {
   type        = string
   description = "Name of cluster to be created."
