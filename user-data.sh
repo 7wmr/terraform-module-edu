@@ -1,5 +1,4 @@
-#!/bin/bash 
-set -x
+set -e -x
 
 git clone https://github.com/7wmr/terraform-mockapp-edu.git \
 && sh terraform-mockapp-edu/setup.sh \
