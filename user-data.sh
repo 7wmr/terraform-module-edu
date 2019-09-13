@@ -6,6 +6,5 @@ sudo yum -y install git \
 && git clone https://github.com/7wmr/terraform-mockapp-edu.git \
 && cd terraform-mockapp-edu \
 && sh setup.sh  2>&1 | tee /tmp/mockapp-setup.log \
-&& nohup go run main.go &
-
+&& nohup go run main.go
 
