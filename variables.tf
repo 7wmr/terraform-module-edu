@@ -3,6 +3,11 @@ variable "aws_region" {
   description = "AWS region to be used"
 }
 
+variable "key_name" {
+  type        = string
+  description = "SSH key name"
+}
+
 variable "server_port" {
   type        = number
   description = "The instance port"

@@ -30,7 +30,14 @@ resource "aws_security_group" "web" {
     cidr_blocks = [ "0.0.0.0/0" ] 
   } 
 
-  egress {
+  ingress { 
+    from_port = "22" 
+    to_port = "22" 
+    protocol = "tcp" 
+    cidr_blocks = [ "0.0.0.0/0" ] 
+  } 
+
+ egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -163,7 +170,7 @@ resource "aws_launch_configuration" "web" {
   instance_type   = "t2.micro" 
   security_groups = [ "${aws_security_group.web.id}" ] 
   user_data       = "${data.template_file.user_data.rendered}" 
-
+  key_name        = "${var.key_name}"
   lifecycle { 
     create_before_destroy = true 
   } 
