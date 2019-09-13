@@ -143,9 +143,9 @@ data "template_file" "user_data" {
   } 
 }
 
-data "aws_ami" "ubuntu" { 
+data "aws_ami" "redhat" { 
     most_recent = true 
-    owners      = [ "099720109477" ] # Canonical 
+    owners      = [ "309956199498" ] # Redhat 
 
     filter { 
         name   = "virtualization-type" 
@@ -161,12 +161,12 @@ data "aws_ami" "ubuntu" {
     } 
     filter { 
         name   = "name" 
-        values = [ "ubuntu/images/hvm-ssd/ubuntu-*-18.04-amd64-server-*" ] 
+        values = [ "RHEL-8.0.0_HVM-*-x86_64-1-Hourly2-GP2" ] 
     } 
 }
 
 resource "aws_launch_configuration" "web" { 
-  image_id        = "${data.aws_ami.ubuntu.id}"
+  image_id        = "${data.aws_ami.redhat.id}"
   instance_type   = "t2.micro" 
   security_groups = [ "${aws_security_group.web.id}" ] 
   user_data       = "${data.template_file.user_data.rendered}" 
