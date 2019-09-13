@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e -x
 
 sudo yum -y install git \
