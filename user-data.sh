@@ -1,4 +1,5 @@
 #!/bin/bash 
+set -x
 
 export GOPATH="$HOME/go" \
 && mkdir $GOPATH \
