@@ -2,8 +2,8 @@ resource "aws_security_group" "elb" {
   name = "${var.cluster_name}-secgroup-elb" 
 
   ingress { 
-    from_port   = "${var.elb_port}" 
-    to_port     = "${var.elb_port}" 
+    from_port   = "${var.elb.port}" 
+    to_port     = "${var.elb.port}" 
     protocol    = "tcp" 
     cidr_blocks = [ "0.0.0.0/0" ] 
   }
@@ -36,13 +36,13 @@ resource "aws_security_group" "web" {
 }
 
 data "aws_route53_zone" "primary" {
-  name         = "${var.elb_domain}."
+  name         = "${var.elb.domain}."
   private_zone = false
 }
 
 resource "aws_route53_record" "web" {
   zone_id = "${data.aws_route53_zone.primary.zone_id}"
-  name    = "${var.cluster_name}.${var.elb_domain}"
+  name    = "${var.cluster_name}.${var.elb.domain}"
   type    = "A"
   
   alias {
@@ -67,7 +67,7 @@ resource "aws_elb" "web" {
   listener {
     instance_port     = "${var.server_port}"
     instance_protocol = "http"
-    lb_port           = "${var.elb_port}"
+    lb_port           = "${var.elb.port}"
     lb_protocol       = "http"
   }
 
@@ -105,9 +105,9 @@ resource "aws_autoscaling_group" "web" {
   health_check_type          = "ELB"
   load_balancers             = [ "${aws_elb.web.name}" ]
 
-  min_size                   = "${var.min_instance_count}"
-  max_size                   = "${var.max_instance_count}"
-  min_elb_capacity           = "${var.min_instance_count}"
+  min_size                   = "${var.asg.min_size}"
+  max_size                   = "${var.asg.max_size}"
+  min_elb_capacity           = "${var.asg.min_size}"
   
   tag { 
     key = "Name" 

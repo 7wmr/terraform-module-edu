@@ -8,24 +8,20 @@ variable "server_port" {
   description = "The instance port"
 } 
 
-variable "elb_port" {
-  type        = number
-  description = "The load balanacer port"
+variable "elb" {
+  type         = object({
+    port       = number
+    domain     = string
+  })
+  description  = "Load balancer arguments"
 }
 
-variable "elb_domain" {
-  type        = string
-  description = "The domain for the load balancer"
-}
-
-variable "min_instance_count" {
-  type        = number
-  description = "Min instances provisioned by ASG"
-}
-
-variable "max_instance_count" {
-  type        = number
-  description = "Max instances provisioned by ASG"
+variable "asg" {
+  type         = object({
+    min_size   = number
+    max_size   = number
+  })
+  description  = "Auto scaling group arguments"
 }
 
 variable "cluster_name" {
