@@ -13,9 +13,9 @@ variable "app_version" {
   description = "The application version number e.g. v1.0.0"
 }
 
-variable "server_port" {
+variable "app_port" {
   type        = number
-  description = "The instance port"
+  description = "The application web port"
 }
 
 variable "elb" {

@@ -24,8 +24,8 @@ resource "aws_security_group" "web" {
   name = "${var.cluster_name}-secgroup-web" 
  
   ingress { 
-    from_port = "${var.server_port}" 
-    to_port = "${var.server_port}" 
+    from_port = "${var.app_port}" 
+    to_port = "${var.app_port}" 
     protocol = "tcp" 
     cidr_blocks = [ "0.0.0.0/0" ] 
   } 
@@ -80,7 +80,7 @@ resource "aws_elb" "web" {
   }
 
   listener {
-    instance_port     = "${var.server_port}"
+    instance_port     = "${var.app_port}"
     instance_protocol = "http"
     lb_port           = "${var.elb.port}"
     lb_protocol       = "http"
@@ -90,7 +90,7 @@ resource "aws_elb" "web" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "HTTP:${var.server_port}/api/v1/info"
+    target              = "HTTP:${var.app_port}/api/v1/info"
     interval            = 30
   }
 
