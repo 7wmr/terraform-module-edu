@@ -2,15 +2,35 @@
 
 cat <<EOF > index.tmpl
 <html>
-  <h1> {{ .title }}</h1>
+  <style>
+    .info {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: auto;
+      max-width: 700px;
+      height: auto;
+      max-height: 150px;
+    }
 
-  <table>
+    .info td, .info th {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .info th {
+        background-color: #f2f2f2;
+        color: black;
+    }
+  </style>
+  <h1> {{ .title }} </h1>
+
+  <table class="info">
     <tr>
       <th>Version</th>
-      <td>${app_version}</td>
+      <td><code>${app_version}</code></td>
     </tr>
   </table>
-
 </html>
 EOF
 
