@@ -140,6 +140,7 @@ data "template_file" "user_data" {
   
   vars = { 
     app_version = var.app_version
+    app_port    = var.app_port
   } 
 }
 
