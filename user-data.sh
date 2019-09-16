@@ -30,7 +30,32 @@ cat <<EOF > index.tmpl
       <th>Version</th>
       <td><code>${app_version}</code></td>
     </tr>
+    <tr>
+      <th>Hostname</th>
+      <td><code id="hostname"></code></td>
+    </tr>
+    <tr>
+      <th>Request</th>
+      <td><code id="request"></code></td>
+    </tr>
   </table>
+  <script>
+    function httpGetAsync(theUrl, callback) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() { 
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+        xmlHttp.send(null);
+    }
+
+    httpGetAsync('/api/v1/info', function(res) {
+      var info = JSON.parse(res);
+      document.getElementById('hostname').innerText = info.hostname;
+      document.getElementById('request').innerText = info.uuid;
+    });
+  </script>
 </html>
 EOF
 
