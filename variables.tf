@@ -8,10 +8,15 @@ variable "key_name" {
   description = "SSH key name"
 }
 
+variable "app_version" {
+  type        = string
+  description = "The application version number e.g. v1.0.0"
+}
+
 variable "server_port" {
   type        = number
   description = "The instance port"
-} 
+}
 
 variable "elb" {
   type         = object({

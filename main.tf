@@ -139,7 +139,7 @@ data "template_file" "user_data" {
   template = "${file("${path.module}/user-data.sh")}" 
   
   vars = { 
-    server_port = "${var.server_port}"
+    app_version = var.app_version
   } 
 }
 
