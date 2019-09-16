@@ -23,7 +23,7 @@ cat <<EOF > index.tmpl
         color: black;
     }
   </style>
-  <h1> {{ .title }} </h1>
+  <h1 class="info"> {{ .title }} </h1>
 
   <table class="info">
     <tr>
