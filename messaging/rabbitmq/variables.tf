@@ -11,7 +11,7 @@ variable "cluster_name" {
 variable "aws_region" {
   type        = string
   description = "AWS region to be used"
-}
+}
 
 variable "rabbitmq" {
   type         = object({
