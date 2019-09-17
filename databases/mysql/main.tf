@@ -9,5 +9,29 @@ resource "aws_db_instance" "mysql" {
   password             = "${var.mysql.password}"
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = "true"
+  vpc_security_group_ids   = [ "${aws_security_group.mysql.id}" ]
 }
+
+resource "aws_security_group" "mysql" {
+  name = "${var.cluster_name}-secgroup-mysql"
+
+  ingress {
+    from_port   = aws_db_instance.mysql.port
+    to_port     = aws_db_instance.mysql.port
+    protocol    = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 
