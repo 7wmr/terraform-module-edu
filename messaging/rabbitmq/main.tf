@@ -23,6 +23,14 @@ data "aws_ami" "redhat" {
 resource "aws_security_group" "rabbitmq" { 
   name = "${var.cluster_name}-secgroup-rabbitmq" 
 
+  # SSH port
+  ingress { 
+    from_port   = "22" 
+    to_port     = "22" 
+    protocol    = "tcp" 
+    cidr_blocks = [ "0.0.0.0/0" ] 
+  }
+
   # Main port
   ingress { 
     from_port   = "5672" 
