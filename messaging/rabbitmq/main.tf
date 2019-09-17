@@ -57,12 +57,12 @@ data "template_file" "user_data" {
 }
 
 resource "aws_instance" "rabbitmq" {
-  ami             = "${data.aws_ami.redhat.id}"
-  instance_type   = "t2.micro"
+  ami                    = "${data.aws_ami.redhat.id}"
+  instance_type          = "t2.micro"
   
-  user_data       = "${data.template_file.user_data.rendered}" 
-  security_groups = ["${aws_security_group.rabbitmq.id}"]
-  key_name        = "${var.key_name}"
+  user_data              = "${data.template_file.user_data.rendered}" 
+  vpc_security_group_ids = ["${aws_security_group.rabbitmq.id}"]
+  key_name               = "${var.key_name}"
 
   tags = {
     Name = "${var.cluster_name}-rabbitmq"
