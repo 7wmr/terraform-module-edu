@@ -1,3 +1,5 @@
+#!/bin/bash
+
 rpm --import https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
 
 cat <<'EOF' > /etc/yum.repos.d/rabbitmq.repo
