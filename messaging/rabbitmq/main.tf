@@ -23,7 +23,6 @@ data "aws_ami" "redhat" {
 resource "aws_security_group" "rabbitmq" { 
   name = "${var.cluster_name}-secgroup-rabbitmq" 
 
-
   # Main port
   ingress { 
     from_port   = "5672" 
@@ -46,10 +45,6 @@ resource "aws_security_group" "rabbitmq" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  lifecycle { 
-    create_before_destroy = true 
-  } 
 }
 
 data "template_file" "user_data" {
@@ -66,7 +61,7 @@ resource "aws_instance" "rabbitmq" {
   instance_type   = "t2.micro"
   
   user_data       = "${data.template_file.user_data.rendered}" 
-  security_groups = [ "${aws_security_group.rabbitmq.id}" ]
+  security_groups = ["${aws_security_group.rabbitmq.id}"]
   key_name        = "${var.key_name}"
 
   tags = {
