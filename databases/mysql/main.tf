@@ -16,8 +16,8 @@ resource "aws_security_group" "mysql" {
   name = "${var.cluster_name}-secgroup-mysql"
 
   ingress {
-    from_port   = aws_db_instance.mysql.port
-    to_port     = aws_db_instance.mysql.port
+    from_port   = 3389 
+    to_port     = 3389
     protocol    = "tcp"
     cidr_blocks = [ "0.0.0.0/0" ]
   }
