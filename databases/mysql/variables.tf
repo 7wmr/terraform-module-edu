@@ -1,5 +1,6 @@
 variable "mysql" {
   type         = object({
+    name       = string
     username   = string
     password   = string
   })
