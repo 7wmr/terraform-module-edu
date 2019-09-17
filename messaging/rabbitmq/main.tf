@@ -56,8 +56,8 @@ data "template_file" "user_data" {
   template = "${file("${path.module}/user-data.sh")}"
 
   vars = {
-    username = var.rabbitmq.username
-    password = var.rabbitmq.password
+    username = "${var.rabbitmq.username}"
+    password = "${var.rabbitmq.password}"
   }
 }
 
@@ -67,6 +67,7 @@ resource "aws_instance" "rabbitmq" {
   
   user_data       = "${data.template_file.user_data.rendered}" 
   security_groups = [ "${aws_security_group.rabbitmq.id}" ]
+  key_name        = "${var.key_name}"
 
   tags = {
     Name = "${var.cluster_name}-rabbitmq"

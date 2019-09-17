@@ -1,3 +1,8 @@
+variable "key_name" {
+  type        = string
+  description = "SSH key name"
+}
+
 variable "cluster_name" {
   type        = string
   description = "Name of cluster to be created."
@@ -15,5 +20,4 @@ variable "rabbitmq" {
   })
   description  = "RabbitMQ arguments"
 }
-
 
