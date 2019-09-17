@@ -1,8 +1,3 @@
-variable "aws_region" {
-  type        = string
-  description = "AWS region to be used"
-}
-
 variable "cluster_name" {
   type        = string
   description = "Name of cluster to be created."
