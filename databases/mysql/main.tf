@@ -4,6 +4,7 @@ resource "aws_db_instance" "mysql" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
+  port                 = "${var.mysql.port}"
   name                 = "${var.mysql.name}"
   username             = "${var.mysql.username}"
   password             = "${var.mysql.password}"
@@ -16,8 +17,8 @@ resource "aws_security_group" "mysql" {
   name = "${var.cluster_name}-secgroup-mysql"
 
   ingress {
-    from_port   = 3306 
-    to_port     = 3306
+    from_port   = "${var.mysql.port}" 
+    to_port     = "${var.mysql.port}"
     protocol    = "tcp"
     cidr_blocks = [ "0.0.0.0/0" ]
   }
