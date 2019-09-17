@@ -137,6 +137,10 @@ resource "aws_autoscaling_group" "web" {
 
 data "template_file" "index_tmpl" {
   template = "${file("${path.module}/index.tmpl")}"
+  
+  vars = {
+    app_version = var.app_version
+  }
 }
 
 
