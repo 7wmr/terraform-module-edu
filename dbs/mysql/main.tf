@@ -4,21 +4,21 @@ resource "aws_db_instance" "mysql" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
-  port                 = "${var.mysql.port}"
-  name                 = "${var.mysql.name}"
-  username             = "${var.mysql.username}"
-  password             = "${var.mysql.password}"
+  port                 = "${var.dbs.port}"
+  name                 = "${var.dbs.name}"
+  username             = "${var.dbs.username}"
+  password             = "${var.dbs.password}"
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = "true"
   vpc_security_group_ids   = [ "${aws_security_group.mysql.id}" ]
 }
 
 resource "aws_security_group" "mysql" {
-  name = "${var.mysql.name}-secgroup-mysql"
+  name = "${var.dbs.name}-secgroup-mysql"
 
   ingress {
-    from_port   = "${var.mysql.port}" 
-    to_port     = "${var.mysql.port}"
+    from_port   = "${var.dbs.port}" 
+    to_port     = "${var.dbs.port}"
     protocol    = "tcp"
     cidr_blocks = [ "0.0.0.0/0" ]
   }

@@ -1,4 +1,4 @@
-variable "mysql" {
+variable "dbs" {
   type         = object({
     name       = string
     username   = string
