@@ -140,7 +140,7 @@ data "template_file" "index_tmpl" {
   
   vars = {
     app_release   = "${var.app.release}"
-    app_timestamp = "${formatdate("DD-MMM-YY hh:mm", timestamp())}" 
+    app_timestamp = "${formatdate("DD-MM-YYYY hh:mm", timestamp())}" 
   }
 }
 
