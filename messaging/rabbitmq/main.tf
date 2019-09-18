@@ -21,7 +21,7 @@ data "aws_ami" "redhat" {
 }
 
 resource "aws_security_group" "rabbitmq" { 
-  name = "${var.cluster_name}-secgroup-rabbitmq" 
+  name = "${var.rabbitmq_name}-secgroup-rabbitmq" 
 
   # SSH port
   ingress { 
