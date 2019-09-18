@@ -84,7 +84,7 @@ data "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "web" {
   zone_id = "${data.aws_route53_zone.primary.zone_id}"
-  name    = "${var.msg.name}.${var.domain}"
+  name    = "${var.msg.name}.${var.msg.domain}"
   type    = "A"
   ttl     = "60"
   records = ["${aws_instance.rabbitmq.public_ip}"]
