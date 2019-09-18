@@ -41,7 +41,7 @@ resource "aws_security_group" "rabbitmq" {
 
   # Console port
   ingress { 
-    from_port   = "15672" 
+    from_port   = "80" 
     to_port     = "15672" 
     protocol    = "tcp" 
     cidr_blocks = [ "0.0.0.0/0" ] 
