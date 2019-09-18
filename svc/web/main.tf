@@ -139,10 +139,10 @@ data "template_file" "index_tmpl" {
   template = "${file("${path.module}/index.tmpl")}"
   
   vars = {
-    app_version = "${var.app.release}"
+    app_release   = "${var.app.release}"
+    app_timestamp = "${formatdate("DD-MMM-YY hh:mm", timestamp())}" 
   }
 }
-
 
 data "template_file" "user_data" { 
   template = "${file("${path.module}/user-data.sh")}" 
