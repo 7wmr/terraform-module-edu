@@ -24,8 +24,8 @@ resource "aws_security_group" "web" {
   name = "${var.cluster_name}-secgroup-web" 
  
   ingress { 
-    from_port = "${var.app_port}" 
-    to_port = "${var.app_port}" 
+    from_port = "${var.app.port}" 
+    to_port = "${var.app.port}" 
     protocol = "tcp" 
     cidr_blocks = [ "0.0.0.0/0" ] 
   } 
@@ -57,7 +57,7 @@ data "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "web" {
   zone_id = "${data.aws_route53_zone.primary.zone_id}"
-  name    = "${var.cluster_name}.${var.elb.domain}"
+  name    = "${var.app.name}.${var.elb.domain}"
   type    = "A"
   
   alias {
@@ -68,7 +68,7 @@ resource "aws_route53_record" "web" {
 }
 
 resource "aws_elb" "web" {
-  name               = "${var.cluster_name}-elb"
+  name               = "${var.app.name}-elb"
   availability_zones = "${data.aws_availability_zones.available.names}"
   security_groups    = ["${aws_security_group.elb.id}"]
  
@@ -80,7 +80,7 @@ resource "aws_elb" "web" {
   }
 
   listener {
-    instance_port     = "${var.app_port}"
+    instance_port     = "${var.app.port}"
     instance_protocol = "http"
     lb_port           = "${var.elb.port}"
     lb_protocol       = "http"
@@ -90,7 +90,7 @@ resource "aws_elb" "web" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "HTTP:${var.app_port}/"
+    target              = "HTTP:${var.app.port}/"
     interval            = 30
   }
 
@@ -100,7 +100,7 @@ resource "aws_elb" "web" {
   connection_draining_timeout = 400
 
   tags = {
-    Name = "${var.cluster_name}-elb"
+    Name = "${var.app.name}-elb"
   }
 
   lifecycle {
@@ -113,7 +113,7 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_autoscaling_group" "web" {
-  name = "${var.cluster_name}-${aws_launch_configuration.web.name}"
+  name = "${var.app.name}-${aws_launch_configuration.web.name}"
 
   launch_configuration       = "${aws_launch_configuration.web.id}"
   availability_zones         = "${data.aws_availability_zones.available.names}"
@@ -126,7 +126,7 @@ resource "aws_autoscaling_group" "web" {
   
   tag { 
     key = "Name" 
-    value = "${var.cluster_name}-instance" 
+    value = "${var.app.name}-instance" 
     propagate_at_launch = true 
   }
 
@@ -139,7 +139,7 @@ data "template_file" "index_tmpl" {
   template = "${file("${path.module}/index.tmpl")}"
   
   vars = {
-    app_version = var.app_version
+    app_version = "${var.app.release}"
   }
 }
 
@@ -148,8 +148,8 @@ data "template_file" "user_data" {
   template = "${file("${path.module}/user-data.sh")}" 
   
   vars = { 
-    app_version = var.app_version
-    app_port    = var.app_port
+    app_version = "${var.app.release}"
+    app_port    = "${var.app.port}"
     index_tmpl  = "${data.template_file.index_tmpl.rendered}"
   } 
 }
