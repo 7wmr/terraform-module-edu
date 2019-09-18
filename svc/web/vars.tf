@@ -4,7 +4,7 @@ variable "key_name" {
   description = "SSH key name"
 }
 
-variable "elb" {
+variable "app" {
   type         = object({
     release    = string
     name       = string
