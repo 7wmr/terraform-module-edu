@@ -1,5 +1,5 @@
 resource "aws_security_group" "elb" { 
-  name = "${var.cluster_name}-secgroup-elb" 
+  name = "${var.web.name}-secgroup-elb" 
 
   ingress { 
     from_port   = "${var.elb.port}" 
@@ -21,7 +21,7 @@ resource "aws_security_group" "elb" {
 }
 
 resource "aws_security_group" "web" { 
-  name = "${var.cluster_name}-secgroup-web" 
+  name = "${var.web.name}-secgroup-web" 
  
   ingress { 
     from_port = "${var.app.port}" 

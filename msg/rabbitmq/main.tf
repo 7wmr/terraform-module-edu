@@ -78,7 +78,7 @@ resource "aws_instance" "rabbitmq" {
 }
 
 data "aws_route53_zone" "primary" {
-  name         = "${var.domain_name}."
+  name         = "${var.msg.domain}."
   private_zone = false
 }
 
