@@ -3,14 +3,19 @@ variable "key_name" {
   description = "SSH key name"
 }
 
-variable "cluster_name" {
+variable "rabbitmq_name" {
   type        = string
-  description = "Name of cluster to be created."
+  description = "Name of rabbitmq instance to be created."
 }
 
 variable "aws_region" {
   type        = string
   description = "AWS region to be used"
+}
+
+variable "domain_name" {
+  type        = string
+  description = "Domain name to be used."
 }
 
 variable "rabbitmq" {
