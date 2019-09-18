@@ -73,7 +73,7 @@ resource "aws_instance" "rabbitmq" {
   key_name               = "${var.key_name}"
 
   tags = {
-    Name = "${var.msg.name}"
+    Name = "${var.msg.name}-instance"
   }
 }
 
