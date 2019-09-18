@@ -3,26 +3,13 @@ variable "key_name" {
   description = "SSH key name"
 }
 
-variable "rabbitmq_name" {
-  type        = string
-  description = "Name of rabbitmq instance to be created."
-}
-
-variable "aws_region" {
-  type        = string
-  description = "AWS region to be used"
-}
-
-variable "domain_name" {
-  type        = string
-  description = "Domain name to be used."
-}
-
-variable "rabbitmq" {
+variable "msg" {
   type         = object({
+    name       = string
     username   = string 
     password   = string
+    domain     = string
   })
-  description  = "RabbitMQ arguments"
+  description  = "RabbitMQ configuration"
 }
 

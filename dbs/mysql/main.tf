@@ -14,7 +14,7 @@ resource "aws_db_instance" "mysql" {
 }
 
 resource "aws_security_group" "mysql" {
-  name = "${var.cluster_name}-secgroup-mysql"
+  name = "${var.mysql.name}-secgroup-mysql"
 
   ingress {
     from_port   = "${var.mysql.port}" 

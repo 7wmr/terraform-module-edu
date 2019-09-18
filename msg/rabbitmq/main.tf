@@ -21,7 +21,7 @@ data "aws_ami" "redhat" {
 }
 
 resource "aws_security_group" "rabbitmq" { 
-  name = "${var.rabbitmq_name}-secgroup-rabbitmq" 
+  name = "${var.msg.name}-secgroup-rabbitmq" 
 
   # SSH port
   ingress { 
@@ -59,8 +59,8 @@ data "template_file" "user_data" {
   template = "${file("${path.module}/user-data.sh")}"
 
   vars = {
-    username = "${var.rabbitmq.username}"
-    password = "${var.rabbitmq.password}"
+    username = "${var.msg.username}"
+    password = "${var.msg.password}"
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_instance" "rabbitmq" {
   key_name               = "${var.key_name}"
 
   tags = {
-    Name = "${var.rabbitmq_name}"
+    Name = "${var.msg.name}"
   }
 }
 
@@ -84,7 +84,7 @@ data "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "web" {
   zone_id = "${data.aws_route53_zone.primary.zone_id}"
-  name    = "${var.rabbitmq_name}.${var.domain_name}"
+  name    = "${var.msg.name}.${var.domain}"
   type    = "A"
   ttl     = "60"
   records = ["${aws_instance.rabbitmq.public_ip}"]
