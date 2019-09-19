@@ -149,9 +149,11 @@ data "template_file" "user_data" {
   template = "${file("${path.module}/user-data.sh")}" 
   
   vars = { 
-    app_version = "${var.app.release}"
-    app_port    = "${var.app.port}"
-    index_tmpl  = "${data.template_file.index_tmpl.rendered}"
+    app_version          = "${var.app.release}"
+    app_port             = "${var.app.port}"
+    index_tmpl           = "${data.template_file.index_tmpl.rendered}"
+    rabbitmq_endpoint    = "${var.rabbitmq_endpoint}"
+    rabbitmq_credentials = "${var.rabbitmq_credentials}"
   } 
 }
 

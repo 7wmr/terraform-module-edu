@@ -30,3 +30,12 @@ variable "asg" {
   description  = "Web auto scaling group configuration"
 }
 
+variable "rabbitmq_endpoint" {
+  type        = string
+  description = "RabbitMQ endpoint e.g. hostname:port"
+}
+
+variable "rabbitmq_credentials" {
+  type        = string
+  description = "RabbitMW credentials e.g. username:password"
+}
