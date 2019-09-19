@@ -25,6 +25,7 @@ variable "asg" {
   type         = object({
     min_size   = number
     max_size   = number
+    enabled    = bool
   })
   description  = "Web auto scaling group configuration"
 }

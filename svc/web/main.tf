@@ -71,7 +71,7 @@ resource "aws_elb" "web" {
   name               = "${var.app.name}-elb"
   availability_zones = "${data.aws_availability_zones.available.names}"
   security_groups    = ["${aws_security_group.elb.id}"]
- 
+
   access_logs {
     bucket        = "terraform-edu"
     bucket_prefix = "access-logs"
@@ -113,7 +113,8 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_autoscaling_group" "web" {
-  name = "${var.app.name}-${aws_launch_configuration.web.name}"
+  count   = "${var.asg.enabled}"
+  name    = "${var.app.name}-${aws_launch_configuration.web.name}"
 
   launch_configuration       = "${aws_launch_configuration.web.id}"
   availability_zones         = "${data.aws_availability_zones.available.names}"
@@ -176,14 +177,36 @@ data "aws_ami" "redhat" {
     } 
 }
 
-resource "aws_launch_configuration" "web" { 
+resource "aws_launch_configuration" "web" {
+  count           = "${var.asg.enabled}"
   image_id        = "${data.aws_ami.redhat.id}"
   instance_type   = "t2.micro" 
+
   security_groups = [ "${aws_security_group.web.id}" ] 
   user_data       = "${data.template_file.user_data.rendered}" 
   key_name        = "${var.key_name}"
+
   lifecycle { 
     create_before_destroy = true 
   } 
 }
 
+resource "aws_instance" "web" {
+  count                  = "${1 - var.asg.enabled}"
+  ami                    = "${data.aws_ami.redhat.id}"
+  instance_type          = "t2.micro"
+  
+  user_data              = "${data.template_file.user_data.rendered}" 
+  vpc_security_group_ids = ["${aws_security_group.web.id}"]
+  key_name               = "${var.key_name}"
+
+  tags = {
+    Name = "${var.app.name}-instance"
+  }
+}
+
+resource "aws_elb_attachement" "web" {
+  count    = "${1 - var.asg.enabled}"
+  elb      = "${aws_elb.web.id}"
+  instance = "${aws_instance.web.id}"
+}
