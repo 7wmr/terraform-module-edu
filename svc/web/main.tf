@@ -113,7 +113,7 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_autoscaling_group" "web" {
-  count   = "${var.asg.enabled}"
+  count   = "${var.asg.enabled ? 1 : 0}"
   name    = "${var.app.name}-${aws_launch_configuration.web.name}"
 
   launch_configuration       = "${aws_launch_configuration.web.id}"
@@ -178,7 +178,7 @@ data "aws_ami" "redhat" {
 }
 
 resource "aws_launch_configuration" "web" {
-  count           = "${var.asg.enabled}"
+  count           = "${var.asg.enabled ? 1 : 0}"
   image_id        = "${data.aws_ami.redhat.id}"
   instance_type   = "t2.micro" 
 
@@ -192,7 +192,7 @@ resource "aws_launch_configuration" "web" {
 }
 
 resource "aws_instance" "web" {
-  count                  = "${1 - var.asg.enabled}"
+  count                  = "${var.asg.enabled ? 0 : 1}"
   ami                    = "${data.aws_ami.redhat.id}"
   instance_type          = "t2.micro"
   
@@ -206,7 +206,7 @@ resource "aws_instance" "web" {
 }
 
 resource "aws_elb_attachement" "web" {
-  count    = "${1 - var.asg.enabled}"
+  count    = "${var.asg.enabled ? 0 : 1}"
   elb      = "${aws_elb.web.id}"
   instance = "${aws_instance.web.id}"
 }
