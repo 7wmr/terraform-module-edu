@@ -10,7 +10,7 @@ variable "app" {
     name       = string
     port       = number
   })
-  description  = "We application configuration"
+  description  = "Web application configuration"
 }
 
 variable "elb" {
