@@ -208,5 +208,5 @@ resource "aws_instance" "web" {
 resource "aws_elb_attachment" "web" {
   count    = "${var.asg.enabled ? 0 : 1}"
   elb      = "${aws_elb.web.id}"
-  instance = "${aws_instance.web.id}"
+  instance = "${aws_instance.web[count.index].id}"
 }
