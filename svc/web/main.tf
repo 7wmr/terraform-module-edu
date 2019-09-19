@@ -114,9 +114,9 @@ data "aws_availability_zones" "available" {
 
 resource "aws_autoscaling_group" "web" {
   count   = "${var.asg.enabled ? 1 : 0}"
-  name    = "${var.app.name}-${aws_launch_configuration.web.name}"
+  name    = "${var.app.name}-${aws_launch_configuration.web[count.index].name}"
 
-  launch_configuration       = "${aws_launch_configuration.web.id}"
+  launch_configuration       = "${aws_launch_configuration.web[count.index].id}"
   availability_zones         = "${data.aws_availability_zones.available.names}"
   health_check_type          = "ELB"
   load_balancers             = [ "${aws_elb.web.name}" ]
@@ -205,7 +205,7 @@ resource "aws_instance" "web" {
   }
 }
 
-resource "aws_elb_attachement" "web" {
+resource "aws_elb_attachment" "web" {
   count    = "${var.asg.enabled ? 0 : 1}"
   elb      = "${aws_elb.web.id}"
   instance = "${aws_instance.web.id}"
