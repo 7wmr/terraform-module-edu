@@ -190,8 +190,6 @@ resource "random_pet" "redhat" {
   keepers = {
     ami_id = "${data.aws_ami.redhat.id}"
   }
-
-  byte_length = 8
 }
 
 resource "aws_launch_configuration" "web" {
