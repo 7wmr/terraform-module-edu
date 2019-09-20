@@ -196,7 +196,7 @@ resource "random_id" "redhat" {
 
 resource "aws_launch_configuration" "web" {
   count           = "${var.asg.enabled ? 1 : 0}"
-  image_id        = "${random_pet.redhat.keepers.ami_id}"
+  image_id        = "${random_id.redhat.keepers.ami_id}"
   instance_type   = "t2.micro" 
 
   security_groups = [ "${aws_security_group.web.id}" ] 
