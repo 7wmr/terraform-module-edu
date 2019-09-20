@@ -34,7 +34,7 @@ resource "aws_security_group_rule" "ssh" {
 }
 
 resource "aws_security_group" "run" { 
-  name = "${var.msg.name}-secgroup-run" 
+  name = "${var.app.name}-secgroup-run" 
 
   egress {
     from_port   = 0
