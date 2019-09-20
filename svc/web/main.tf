@@ -133,7 +133,8 @@ resource "aws_autoscaling_group" "web" {
   
   tag { 
     key = "Name" 
-    value = "${var.app.name}-instance" 
+    value = "${var.app.name}-${random_pet.redhat.id}"
+
     propagate_at_launch = true 
   }
 
@@ -185,9 +186,17 @@ data "aws_ami" "redhat" {
     } 
 }
 
+resource "random_pet" "redhat" {
+  keepers = {
+    ami_id = "${data.aws_ami.redhat.id}"
+  }
+
+  byte_length = 8
+}
+
 resource "aws_launch_configuration" "web" {
   count           = "${var.asg.enabled ? 1 : 0}"
-  image_id        = "${data.aws_ami.redhat.id}"
+  image_id        = "${random_pet.redhat.keepers.ami_id}"
   instance_type   = "t2.micro" 
 
   security_groups = [ "${aws_security_group.web.id}" ] 
@@ -201,7 +210,7 @@ resource "aws_launch_configuration" "web" {
 
 resource "aws_instance" "web" {
   count                  = "${var.asg.enabled ? 0 : 1}"
-  ami                    = "${data.aws_ami.redhat.id}"
+  ami                    = "${random_pet.redhat.keepers.ami_id}"
   instance_type          = "t2.micro"
   
   user_data              = "${data.template_file.user_data.rendered}" 
@@ -209,7 +218,7 @@ resource "aws_instance" "web" {
   key_name               = "${var.key_name}"
 
   tags = {
-    Name = "${var.app.name}-instance"
+    Name = "${var.app.name}-${random_pet.redhat.id}"
   }
 }
 

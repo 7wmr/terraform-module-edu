@@ -60,12 +60,24 @@ resource "aws_security_group" "rabbitmq" {
   }
 }
 
+resource "random_string" "svc_username" {
+  length = 6
+  special = false
+}
+
+resource "random_password" "svc_password" {
+  length = 10
+  special = true
+}
+
 data "template_file" "user_data" {
   template = "${file("${path.module}/user-data.sh")}"
 
   vars = {
-    username = "${var.msg.username}"
-    password = "${var.msg.password}"
+    adm_username = "${var.msg.username}"
+    adm_password = "${var.msg.password}"
+    svc_username = "${random_string.svc_username.result}"
+    svc_password = "${random_password.svc_password.result}"
   }
 }
 

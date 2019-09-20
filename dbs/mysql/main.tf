@@ -5,7 +5,7 @@ resource "aws_db_instance" "mysql" {
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
   port                 = "${var.dbs.port}"
-  name                 = "${var.dbs.name}"
+  name                 = "${replace(var.dbs.name, "-", "")}"
   username             = "${var.dbs.username}"
   password             = "${var.dbs.password}"
   parameter_group_name = "default.mysql5.7"
