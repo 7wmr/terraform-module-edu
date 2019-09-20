@@ -191,7 +191,7 @@ resource "random_id" "redhat" {
     ami_id = "${data.aws_ami.redhat.id}"
   }
 
-  byte_length = 4
+  byte_length = 3
 }
 
 resource "aws_launch_configuration" "web" {
