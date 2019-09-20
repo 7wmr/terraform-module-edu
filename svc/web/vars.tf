@@ -4,6 +4,11 @@ variable "key_name" {
   description = "SSH key name"
 }
 
+variable "ssh_enabled" {
+  type        = bool
+  description = "Open SSH port 22"
+}
+
 variable "app" {
   type         = object({
     release    = string
@@ -37,5 +42,5 @@ variable "rabbitmq_endpoint" {
 
 variable "rabbitmq_credentials" {
   type        = string
-  description = "RabbitMW credentials e.g. username:password"
+  description = "RabbitMQ credentials e.g. username:password"
 }

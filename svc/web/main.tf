@@ -20,6 +20,19 @@ resource "aws_security_group" "elb" {
   } 
 }
 
+resource "aws_security_group_rule" "ssh" {
+  count = "${var.ssh_enabled ? 1 : 0}"
+  
+  type = "ingress"
+
+  from_port   = "22" 
+  to_port     = "22" 
+  protocol    = "tcp" 
+  cidr_blocks = [ "0.0.0.0/0" ] 
+
+  security_group_id = "${aws_security_group.web.id}"
+}
+
 resource "aws_security_group" "web" { 
   name = "${var.app.name}-secgroup-web" 
  
@@ -30,14 +43,7 @@ resource "aws_security_group" "web" {
     cidr_blocks = [ "0.0.0.0/0" ] 
   } 
 
-  ingress { 
-    from_port = "22" 
-    to_port = "22" 
-    protocol = "tcp" 
-    cidr_blocks = [ "0.0.0.0/0" ] 
-  } 
-
- egress {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
