@@ -81,8 +81,16 @@ data "template_file" "user_data" {
   }
 }
 
+resource "random_id" "redhat" {
+  keepers = {
+    ami_id = "${data.aws_ami.redhat.id}"
+  }
+
+  byte_length = 4
+}
+
 resource "aws_instance" "rabbitmq" {
-  ami                    = "${data.aws_ami.redhat.id}"
+  ami                    = "${random_id.redhat.keepers.ami_id}"
   instance_type          = "t2.micro"
   
   user_data              = "${data.template_file.user_data.rendered}" 
@@ -90,7 +98,7 @@ resource "aws_instance" "rabbitmq" {
   key_name               = "${var.key_name}"
 
   tags = {
-    Name = "${var.msg.name}-instance"
+    Name = "${var.msg.name}-${random_id.redhat.hex}"
   }
 }
 

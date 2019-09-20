@@ -54,8 +54,16 @@ data "template_file" "user_data" {
   } 
 }
 
+resource "random_id" "redhat" {
+  keepers = {
+    ami_id = "${data.aws_ami.redhat.id}"
+  }
+
+  byte_length = 4
+}
+
 resource "aws_instance" "run" {
-  ami                    = "${data.aws_ami.redhat.id}"
+  ami                    = "${random_id.redhat.keepers.ami_id}"
   instance_type          = "t2.micro"
   
   user_data              = "${data.template_file.user_data.rendered}" 
@@ -63,7 +71,7 @@ resource "aws_instance" "run" {
   key_name               = "${var.key_name}"
 
   tags = {
-    Name = "${var.app.name}-instance"
+    Name = "${var.app.name}-${random_id.redhat.hex}"
   }
 }
 
