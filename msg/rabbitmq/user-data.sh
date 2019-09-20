@@ -31,6 +31,11 @@ chkconfig rabbitmq-server on
 systemctl start rabbitmq-server
 
 rabbitmq-plugins enable rabbitmq_shovel rabbitmq_management
-rabbitmqctl add_user '${username}' '${password}'
-rabbitmqctl set_user_tags '${username}' administrator
-rabbitmqctl set_permissions -p / '${username}' ".*" ".*" ".*"
+rabbitmqctl add_user '${adm_username}' '${adm_password}'
+rabbitmqctl set_user_tags '${adm_username}' administrator
+rabbitmqctl set_permissions -p / '${adm_username}' ".*" ".*" ".*"
+
+rabbitmqctl add_user '${svc_username}' '${svc_password}'
+rabbitmqctl set_permissions -p / '${svc_username}' ".*" ".*" ".*"
+
+
