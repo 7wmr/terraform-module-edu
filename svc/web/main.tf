@@ -49,7 +49,6 @@ resource "aws_security_group" "web" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
  
   lifecycle { 
     create_before_destroy = true 
@@ -73,10 +72,40 @@ resource "aws_route53_record" "web" {
   }
 }
 
+resource "tls_private_key" "cert" {
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P384"
+}
+
+resource "tls_self_signed_cert" "cert" {
+  key_algorithm   = "ECDSA"
+  private_key_pem = "${tls_private_key.cert.private_key_pem}"
+
+  subject {
+    common_name  = "${var.elb.domain}"
+    organization = "${var.elb.domain}"
+  }
+
+  validity_period_hours = 12
+
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+    "server_auth",
+  ]
+}
+
+resource "aws_iam_server_certificate" "cert" {
+  name             = "${var.elb.domain}"
+  certificate_body = "${tls_self_signed_cert.cert.cert_pem}"
+  private_key      = "${tls_private_key.cert.private_key_pem}"
+}
+
 resource "aws_elb" "web" {
   name               = "${var.app.name}-elb"
   availability_zones = "${data.aws_availability_zones.available.names}"
   security_groups    = ["${aws_security_group.elb.id}"]
+  ssl_certificate_id = "${aws_iam_server_certificate.cert.arn}"
 
   access_logs {
     bucket        = "terraform-edu"
@@ -89,7 +118,7 @@ resource "aws_elb" "web" {
     instance_port     = "${var.app.port}"
     instance_protocol = "http"
     lb_port           = "${var.elb.port}"
-    lb_protocol       = "http"
+    lb_protocol       = "https"
   }
 
   health_check {
