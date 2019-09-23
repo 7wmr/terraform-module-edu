@@ -105,7 +105,6 @@ resource "aws_elb" "web" {
   name               = "${var.app.name}-elb"
   availability_zones = "${data.aws_availability_zones.available.names}"
   security_groups    = ["${aws_security_group.elb.id}"]
-  ssl_certificate_id = "${aws_iam_server_certificate.cert.arn}"
 
   access_logs {
     bucket        = "terraform-edu"
@@ -119,6 +118,7 @@ resource "aws_elb" "web" {
     instance_protocol = "http"
     lb_port           = "${var.elb.port}"
     lb_protocol       = "https"
+    ssl_certificate_id = "${aws_iam_server_certificate.cert.arn}"
   }
 
   health_check {
