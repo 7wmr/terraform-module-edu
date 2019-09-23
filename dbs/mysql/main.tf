@@ -13,6 +13,16 @@ resource "aws_db_instance" "mysql" {
   vpc_security_group_ids   = [ "${aws_security_group.mysql.id}" ]
 }
 
+provider "mysql" {
+  endpoint = "${aws_db_instance.mysql.endpoint}"
+  username = "${aws_db_instance.mysql.username}"
+  password = "${aws_db_instance.mysql.password}"
+}
+
+resource "mysql_database" "dbs" {
+  name = "TerraformEdu"
+}
+
 resource "aws_security_group" "mysql" {
   name = "${var.dbs.name}-secgroup-mysql"
 
