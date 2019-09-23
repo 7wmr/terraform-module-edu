@@ -51,6 +51,8 @@ data "template_file" "user_data" {
     app_version          = "${var.app.release}"
     rabbitmq_endpoint    = "${var.rabbitmq_endpoint}"
     rabbitmq_credentials = "${var.rabbitmq_credentials}"
+    mysql_endpoint       = "${var.mysql_endpoint}"
+    mysql_credentials    = "${var.mysql_credentials}"
   } 
 }
 

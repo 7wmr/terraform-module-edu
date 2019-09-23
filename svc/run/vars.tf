@@ -25,3 +25,13 @@ variable "rabbitmq_credentials" {
   type        = string
   description = "RabbitMQ credentials e.g. username:password"
 }
+
+variable "mysql_endpoint" {
+  type        = string
+  description = "MySQL endpoint e.g. hostname:port"
+}
+
+variable "mysql_credentials" {
+  type        = string
+  description = "MySQL credentials e.g. username:password"
+}
