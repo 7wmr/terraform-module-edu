@@ -20,7 +20,7 @@ provider "mysql" {
 }
 
 resource "mysql_database" "dbs" {
-  name = "TerraformEdu"
+  name = "terraformedu"
 }
 
 resource "aws_security_group" "mysql" {
