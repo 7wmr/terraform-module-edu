@@ -36,7 +36,6 @@ rabbitmqctl set_user_tags '${adm_username}' administrator
 rabbitmqctl set_permissions -p / '${adm_username}' ".*" ".*" ".*"
 
 rabbitmqctl add_user '${svc_username}' '${svc_password}'
-rabbitmqctl set_user_tags '${svc_username}' administrator
 rabbitmqctl set_permissions -p / '${svc_username}' ".*" ".*" ".*"
 
 

@@ -69,8 +69,8 @@ resource "random_string" "svc_username" {
 }
 
 resource "random_password" "svc_password" {
-  length = 10
-  special = true
+  length = 12
+  special = false
 }
 
 data "template_file" "user_data" {
