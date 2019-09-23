@@ -61,8 +61,11 @@ resource "aws_security_group" "rabbitmq" {
 }
 
 resource "random_string" "svc_username" {
-  length = 6
+  length  = 6
   special = false
+  lower   = true
+  upper   = false
+  number  = false
 }
 
 resource "random_password" "svc_password" {
