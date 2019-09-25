@@ -82,7 +82,7 @@ resource "tls_self_signed_cert" "cert" {
   private_key_pem = "${tls_private_key.cert.private_key_pem}"
 
   subject {
-    common_name  = "${var.elb.domain}"
+    common_name  = "${var.app.name}-${var.environment}.${var.elb.domain}"
     organization = "${var.elb.domain}"
   }
 
@@ -96,7 +96,7 @@ resource "tls_self_signed_cert" "cert" {
 }
 
 resource "aws_iam_server_certificate" "cert" {
-  name             = "${var.elb.domain}"
+  name             = "${var.app.name}-${var.environment}.${var.elb.domain}"
   certificate_body = "${tls_self_signed_cert.cert.cert_pem}"
   private_key      = "${tls_private_key.cert.private_key_pem}"
 }
@@ -247,7 +247,7 @@ resource "aws_instance" "web" {
   key_name               = "${var.key_name}"
 
   tags = {
-    Name = "${var.app.name}-${random_id.redhat.hex}"
+    Name = "${var.app.name}-${var.environment}-${random_id.redhat.hex}"
   }
 }
 
