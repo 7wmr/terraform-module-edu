@@ -1,5 +1,5 @@
 resource "aws_security_group" "elb" { 
-  name = "${var.app.name}-secgroup-elb" 
+  name = "${var.app.name}-${var.environment}-secgroup-elb" 
 
   ingress { 
     from_port   = "${var.elb.port}" 
@@ -34,7 +34,7 @@ resource "aws_security_group_rule" "ssh" {
 }
 
 resource "aws_security_group" "web" { 
-  name = "${var.app.name}-secgroup-web" 
+  name = "${var.app.name}-${var.environment}-secgroup-web" 
  
   ingress { 
     from_port = "${var.app.port}" 
@@ -63,7 +63,7 @@ data "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "web" {
   zone_id = "${data.aws_route53_zone.primary.zone_id}"
-  name    = "${var.app.name}.${var.elb.domain}"
+  name    = "${var.app.name}-${var.environment}.${var.elb.domain}"
   type    = "A"
   
   alias {
@@ -74,7 +74,7 @@ resource "aws_route53_record" "web" {
 }
 
 resource "aws_elb" "web" {
-  name               = "${var.app.name}-elb"
+  name               = "${var.app.name}-${var.environment}-elb"
   availability_zones = "${data.aws_availability_zones.available.names}"
   security_groups    = ["${aws_security_group.elb.id}"]
 
@@ -106,7 +106,7 @@ resource "aws_elb" "web" {
   connection_draining_timeout = 400
 
   tags = {
-    Name = "${var.app.name}-elb"
+    Name = "${var.app.name}-${var.environment}-elb"
   }
 
   lifecycle {

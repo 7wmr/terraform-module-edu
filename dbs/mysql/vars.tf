@@ -1,3 +1,8 @@
+variable "environment" {
+  type        = string
+  description = "Name of current environment"
+}
+
 variable "dbs" {
   type         = object({
     name       = string

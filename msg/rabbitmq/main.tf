@@ -34,7 +34,7 @@ resource "aws_security_group_rule" "ssh" {
 }
 
 resource "aws_security_group" "rabbitmq" { 
-  name = "${var.msg.name}-secgroup-rabbitmq" 
+  name = "${var.msg.name}-${var.environment}-secgroup-rabbitmq" 
 
   # Main port
   ingress { 
@@ -101,7 +101,7 @@ resource "aws_instance" "rabbitmq" {
   key_name               = "${var.key_name}"
 
   tags = {
-    Name = "${var.msg.name}-${random_id.redhat.hex}"
+    Name = "${var.msg.name}-${var.environment}-${random_id.redhat.hex}"
   }
 }
 
@@ -112,10 +112,8 @@ data "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "web" {
   zone_id = "${data.aws_route53_zone.primary.zone_id}"
-  name    = "${var.msg.name}.${var.msg.domain}"
+  name    = "${var.msg.name}-${var.environment}.${var.msg.domain}"
   type    = "A"
   ttl     = "60"
   records = ["${aws_instance.rabbitmq.public_ip}"]
 }
-
-

@@ -5,7 +5,7 @@ resource "aws_db_instance" "mysql" {
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
   port                 = "${var.dbs.port}"
-  name                 = "${replace(var.dbs.name, "-", "")}"
+  name                 = "${var.dbs.name}${var.environment}"
   username             = "${var.dbs.username}"
   password             = "${var.dbs.password}"
   publicly_accessible  = true # allowed for testing
@@ -25,7 +25,7 @@ resource "mysql_database" "dbs" {
 }
 
 resource "aws_security_group" "mysql" {
-  name = "${var.dbs.name}-secgroup-mysql"
+  name = "${var.dbs.name}-${var.environment}-secgroup-mysql"
 
   ingress {
     from_port   = "${var.dbs.port}" 
@@ -45,5 +45,3 @@ resource "aws_security_group" "mysql" {
     create_before_destroy = true
   }
 }
-
-

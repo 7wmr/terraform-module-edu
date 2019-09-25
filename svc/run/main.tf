@@ -34,7 +34,7 @@ resource "aws_security_group_rule" "ssh" {
 }
 
 resource "aws_security_group" "run" { 
-  name = "${var.app.name}-secgroup-run" 
+  name = "${var.app.name}-${var.environment}-secgroup-run" 
 
   egress {
     from_port   = 0
@@ -73,8 +73,6 @@ resource "aws_instance" "run" {
   key_name               = "${var.key_name}"
 
   tags = {
-    Name = "${var.app.name}-${random_id.redhat.hex}"
+    Name = "${var.app.name}-${var.environment}-${random_id.redhat.hex}"
   }
 }
-
-

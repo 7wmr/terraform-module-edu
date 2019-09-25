@@ -1,3 +1,7 @@
+variable "environment" {
+  type        = string
+  description = "Name of current environment"
+}
 
 variable "key_name" {
   type        = string
