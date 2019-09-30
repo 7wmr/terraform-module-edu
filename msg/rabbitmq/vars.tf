@@ -5,7 +5,12 @@ variable "environment" {
 
 variable "vpc_id" {
   type        = string
-  description = "Name of the VPC id"
+  description = "The vpc id"
+}
+
+variable "subnet_id" {
+  type        = string
+  description = "The subnet idw"
 }
 
 variable "key_name" {
