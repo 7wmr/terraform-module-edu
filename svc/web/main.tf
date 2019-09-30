@@ -105,7 +105,7 @@ resource "aws_iam_server_certificate" "cert" {
 
 resource "aws_elb" "web" {
   name               = "${var.app.name}-${var.environment}-elb"
-  availability_zones = "${data.aws_availability_zones.available.names}"
+#  availability_zones = "${data.aws_availability_zones.available.names}"
   security_groups    = ["${aws_security_group.elb.id}"]
   subnets            = ["${var.subnet_id}"]
 
