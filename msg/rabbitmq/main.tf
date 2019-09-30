@@ -96,7 +96,6 @@ resource "random_id" "redhat" {
 resource "aws_instance" "rabbitmq" {
   ami                    = "${random_id.redhat.keepers.ami_id}"
   instance_type          = "t2.micro"
-  vpc_id                 = "${var.vpc_id}"
   subnet_id              = "${var.subnet_id}" 
 
   user_data              = "${data.template_file.user_data.rendered}" 
