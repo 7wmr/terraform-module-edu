@@ -3,6 +3,11 @@ variable "environment" {
   description = "Name of current environment"
 }
 
+variable "vpc_id" {
+  type        = string
+  description = "Name of the VPC id"
+}
+
 variable "key_name" {
   type        = string
   description = "SSH key name"

@@ -35,6 +35,7 @@ resource "aws_security_group_rule" "ssh" {
 
 resource "aws_security_group" "rabbitmq" { 
   name = "${var.msg.name}-${var.environment}-secgroup-rabbitmq" 
+  vpc_id = "${var.vpc_id}"  
 
   # Main port
   ingress { 
@@ -95,6 +96,7 @@ resource "random_id" "redhat" {
 resource "aws_instance" "rabbitmq" {
   ami                    = "${random_id.redhat.keepers.ami_id}"
   instance_type          = "t2.micro"
+  vpc_id                 = "${var.vpc_id}"
   
   user_data              = "${data.template_file.user_data.rendered}" 
   vpc_security_group_ids = ["${aws_security_group.rabbitmq.id}"]
