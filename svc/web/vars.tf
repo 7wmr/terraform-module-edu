@@ -3,6 +3,16 @@ variable "environment" {
   description = "Name of current environment"
 }
 
+variable "vpc_id" {
+  type        = string
+  description = "The vpc id"
+}
+
+variable "subnet_id" {
+  type        = string
+  description = "The subnet idw"
+}
+
 variable "key_name" {
   type        = string
   description = "SSH key name"

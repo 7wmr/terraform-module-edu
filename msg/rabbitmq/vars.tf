@@ -10,7 +10,7 @@ variable "vpc_id" {
 
 variable "subnet_id" {
   type        = string
-  description = "The subnet idw"
+  description = "The subnet id"
 }
 
 variable "key_name" {

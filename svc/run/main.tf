@@ -35,6 +35,7 @@ resource "aws_security_group_rule" "ssh" {
 
 resource "aws_security_group" "run" { 
   name = "${var.app.name}-${var.environment}-secgroup-run" 
+  vpc_id = "${var.vpc_id}"  
 
   egress {
     from_port   = 0
@@ -67,6 +68,7 @@ resource "random_id" "redhat" {
 resource "aws_instance" "run" {
   ami                    = "${random_id.redhat.keepers.ami_id}"
   instance_type          = "t2.micro"
+  subnet_id              = "${var.subnet_id}" 
   
   user_data              = "${data.template_file.user_data.rendered}" 
   vpc_security_group_ids = ["${aws_security_group.run.id}"]

@@ -1,5 +1,6 @@
 resource "aws_security_group" "elb" { 
-  name = "${var.app.name}-${var.environment}-secgroup-elb" 
+  name   = "${var.app.name}-${var.environment}-secgroup-elb" 
+  vpc_id = "${var.vpc_id}"  
 
   ingress { 
     from_port   = "${var.elb.port}" 
@@ -21,8 +22,9 @@ resource "aws_security_group" "elb" {
 }
 
 resource "aws_security_group_rule" "ssh" {
-  count = "${var.ssh_enabled ? 1 : 0}"
-  
+  count  = "${var.ssh_enabled ? 1 : 0}"
+  vpc_id = "${var.vpc_id}"  
+ 
   type = "ingress"
 
   from_port   = "22" 
@@ -34,7 +36,8 @@ resource "aws_security_group_rule" "ssh" {
 }
 
 resource "aws_security_group" "web" { 
-  name = "${var.app.name}-${var.environment}-secgroup-web" 
+  name   = "${var.app.name}-${var.environment}-secgroup-web" 
+  vpc_id = "${var.vpc_id}"  
  
   ingress { 
     from_port = "${var.app.port}" 
@@ -151,6 +154,8 @@ resource "aws_autoscaling_group" "web" {
   count   = "${var.asg.enabled ? 1 : 0}"
   name    = "${var.app.name}-${aws_launch_configuration.web[count.index].name}"
 
+  vpc_zone_identifier        = [ "${var.subnet_id}" ]
+
   launch_configuration       = "${aws_launch_configuration.web[count.index].id}"
   availability_zones         = "${data.aws_availability_zones.available.names}"
   health_check_type          = "ELB"
@@ -241,6 +246,7 @@ resource "aws_instance" "web" {
   count                  = "${var.asg.enabled ? 0 : 1}"
   ami                    = "${random_id.redhat.keepers.ami_id}"
   instance_type          = "t2.micro"
+  subnet_id              = "${var.subnet_id}"
   
   user_data              = "${data.template_file.user_data.rendered}" 
   vpc_security_group_ids = ["${aws_security_group.web.id}"]

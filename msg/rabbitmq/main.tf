@@ -107,15 +107,15 @@ resource "aws_instance" "rabbitmq" {
   }
 }
 
-data "aws_route53_zone" "primary" {
-  name         = "${var.msg.domain}."
-  private_zone = false
-}
-
-resource "aws_route53_record" "web" {
-  zone_id = "${data.aws_route53_zone.primary.zone_id}"
-  name    = "${var.msg.name}-${var.environment}.${var.msg.domain}"
-  type    = "A"
-  ttl     = "60"
-  records = ["${aws_instance.rabbitmq.public_ip}"]
-}
+#data "aws_route53_zone" "primary" {
+#  name         = "${var.msg.domain}."
+#  private_zone = false
+#}
+#
+#resource "aws_route53_record" "web" {
+#  zone_id = "${data.aws_route53_zone.primary.zone_id}"
+#  name    = "${var.msg.name}-${var.environment}.${var.msg.domain}"
+#  type    = "A"
+#  ttl     = "60"
+#  records = ["${aws_instance.rabbitmq.public_ip}"]
+#}
