@@ -23,7 +23,6 @@ resource "aws_security_group" "elb" {
 
 resource "aws_security_group_rule" "ssh" {
   count  = "${var.ssh_enabled ? 1 : 0}"
-  vpc_id = "${var.vpc_id}"  
  
   type = "ingress"
 
