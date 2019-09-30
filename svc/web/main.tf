@@ -107,6 +107,7 @@ resource "aws_elb" "web" {
   name               = "${var.app.name}-${var.environment}-elb"
   availability_zones = "${data.aws_availability_zones.available.names}"
   security_groups    = ["${aws_security_group.elb.id}"]
+  subnets            = ["${var.subnet_id}"]
 
   access_logs {
     bucket        = "terraform-edu"
