@@ -29,13 +29,6 @@ resource "aws_security_group" "mysql" {
   name   = "${var.dbs.name}-${var.environment}-secgroup-mysql"
   vpc_id = "${var.vpc_id}" 
 
-  ingress {
-    from_port   = "${var.dbs.port}" 
-    to_port     = "${var.dbs.port}"
-    protocol    = "tcp"
-    cidr_blocks = [ "0.0.0.0/0" ]
-  }
-
   egress {
     from_port   = 0
     to_port     = 0

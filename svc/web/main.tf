@@ -34,16 +34,20 @@ resource "aws_security_group_rule" "ssh" {
   security_group_id = "${aws_security_group.web.id}"
 }
 
+resource "aws_security_group_rule" "elb_web" {
+  type                     = "ingress"
+
+  from_port                = "${var.app.port}"
+  to_port                  = "${var.app.port}"
+  protocol                 = "tcp"
+
+  source_security_group_id = "${aws_security_group.elb.id}"
+  security_group_id        = "${aws_security_group.web.id}"
+}
+
 resource "aws_security_group" "web" { 
   name   = "${var.app.name}-${var.environment}-secgroup-web" 
   vpc_id = "${var.vpc_id}"  
- 
-  ingress { 
-    from_port = "${var.app.port}" 
-    to_port = "${var.app.port}" 
-    protocol = "tcp" 
-    cidr_blocks = [ "0.0.0.0/0" ] 
-  } 
 
   egress {
     from_port   = 0
