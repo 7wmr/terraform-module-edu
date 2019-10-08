@@ -160,7 +160,7 @@ resource "aws_autoscaling_group" "web" {
   vpc_zone_identifier        = [ "${var.subnet_id}" ]
 
   launch_configuration       = "${aws_launch_configuration.web[count.index].id}"
-  availability_zones         = "${data.aws_availability_zones.available.names[0]}"
+  availability_zones         = "${data.aws_availability_zones.available.names}"
   health_check_type          = "ELB"
   load_balancers             = [ "${aws_elb.web.name}" ]
 
