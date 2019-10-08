@@ -8,21 +8,10 @@ resource "aws_db_instance" "mysql" {
   name                   = "${var.dbs.name}${var.environment}"
   username               = "${var.dbs.username}"
   password               = "${var.dbs.password}"
-  publicly_accessible    = true # allowed for testing
   parameter_group_name   = "default.mysql5.7"
   skip_final_snapshot    = "true"
   vpc_security_group_ids = [ "${aws_security_group.mysql.id}" ]
   db_subnet_group_name   = "${var.subnet_group_name}" 
-}
-
-provider "mysql" {
-  endpoint = "${aws_db_instance.mysql.endpoint}"
-  username = "${aws_db_instance.mysql.username}"
-  password = "${aws_db_instance.mysql.password}"
-}
-
-resource "mysql_database" "dbs" {
-  name = "TerraformEdu"
 }
 
 resource "aws_security_group" "mysql" {
