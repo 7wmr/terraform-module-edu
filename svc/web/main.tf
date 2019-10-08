@@ -109,7 +109,6 @@ resource "aws_iam_server_certificate" "cert" {
 
 resource "aws_elb" "web" {
   name               = "${var.app.name}-${var.environment}-elb"
-#  availability_zones = "${data.aws_availability_zones.available.names}"
   security_groups    = ["${aws_security_group.elb.id}"]
   subnets            = ["${var.subnet_id}"]
 
@@ -156,11 +155,11 @@ data "aws_availability_zones" "available" {
 
 resource "aws_autoscaling_group" "web" {
   count   = "${var.asg.enabled ? 1 : 0}"
-  name    = "${var.app.name}-${aws_launch_configuration.web[count.index].name}"
+  name    = "${var.app.name}-${aws_launch_configuration.web.name}"
 
   vpc_zone_identifier        = [ "${var.subnet_id}" ]
 
-  launch_configuration       = "${aws_launch_configuration.web[count.index].id}"
+  launch_configuration       = "${aws_launch_configuration.web.id}"
   availability_zones         = "${data.aws_availability_zones.available.names}"
   health_check_type          = "ELB"
   load_balancers             = [ "${aws_elb.web.name}" ]
