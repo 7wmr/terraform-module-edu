@@ -8,7 +8,7 @@ resource "aws_db_instance" "mysql" {
   name                   = "${var.dbs.name}${var.environment}"
   username               = "${var.dbs.username}"
   password               = "${var.dbs.password}"
-#  publicly_accessible    = true # allowed for testing
+  publicly_accessible    = true # allowed for testing
   parameter_group_name   = "default.mysql5.7"
   skip_final_snapshot    = "true"
   vpc_security_group_ids = [ "${aws_security_group.mysql.id}" ]
