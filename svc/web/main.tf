@@ -155,11 +155,11 @@ data "aws_availability_zones" "available" {
 
 resource "aws_autoscaling_group" "web" {
   count   = "${var.asg.enabled ? 1 : 0}"
-  name    = "${var.app.name}-${aws_launch_configuration.web[count.index].name}"
+  name    = "${var.app.name}-${aws_launch_configuration.web[0].name}"
 
   vpc_zone_identifier        = [ "${var.subnet_id}" ]
 
-  launch_configuration       = "${aws_launch_configuration.web[count.index].id}"
+  launch_configuration       = "${aws_launch_configuration.web[0].id}"
   availability_zones         = "${data.aws_availability_zones.available.names}"
   health_check_type          = "ELB"
   load_balancers             = [ "${aws_elb.web.name}" ]
