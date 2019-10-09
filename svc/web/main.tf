@@ -170,7 +170,7 @@ resource "aws_autoscaling_group" "web" {
   
   tag { 
     key = "Name" 
-    value = "${var.app.name}-${random_id.redhat.hex}"
+    value = "${var.app.name}-${var.environment}-${random_id.redhat.hex}"
 
     propagate_at_launch = true 
   }
