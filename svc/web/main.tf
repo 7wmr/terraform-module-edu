@@ -250,7 +250,8 @@ resource "aws_instance" "web" {
   ami                    = "${random_id.redhat.keepers.ami_id}"
   instance_type          = "t2.micro"
   subnet_id              = "${var.subnet_id}"
-  
+  # associate_public_ip_address = true
+
   user_data              = "${data.template_file.user_data.rendered}" 
   vpc_security_group_ids = ["${aws_security_group.web.id}"]
   key_name               = "${var.key_name}"
