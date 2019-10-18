@@ -110,7 +110,7 @@ resource "aws_iam_server_certificate" "cert" {
 resource "aws_elb" "web" {
   name               = "${var.app.name}-${var.environment}-elb"
   security_groups    = ["${aws_security_group.elb.id}"]
-  subnets            = ["${var.subnet_ids}"]
+  subnets            = var.subnet_ids
 
   access_logs {
     bucket        = "terraform-edu"
