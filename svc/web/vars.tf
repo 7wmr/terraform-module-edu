@@ -8,9 +8,9 @@ variable "vpc_id" {
   description = "The vpc id"
 }
 
-variable "subnet_id" {
-  type        = string
-  description = "The subnet idw"
+variable "subnet_ids" {
+  type        = list(string)
+  description = "The subnet ids"
 }
 
 variable "key_name" {

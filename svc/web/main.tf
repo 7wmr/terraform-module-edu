@@ -110,7 +110,7 @@ resource "aws_iam_server_certificate" "cert" {
 resource "aws_elb" "web" {
   name               = "${var.app.name}-${var.environment}-elb"
   security_groups    = ["${aws_security_group.elb.id}"]
-  subnets            = ["${var.subnet_id}"]
+  subnets            = ["${var.subnet_ids}"]
 
   access_logs {
     bucket        = "terraform-edu"
@@ -157,7 +157,7 @@ resource "aws_autoscaling_group" "web" {
   count   = "${var.asg.enabled ? 1 : 0}"
   name    = "${var.app.name}-${aws_launch_configuration.web[count.index].name}"
 
-  vpc_zone_identifier        = [ "${var.subnet_id}" ]
+  vpc_zone_identifier        = [ "${var.subnet_ids}" ]
 
   launch_configuration       = "${aws_launch_configuration.web[count.index].id}"
   availability_zones         = "${data.aws_availability_zones.available.names}"
@@ -249,7 +249,7 @@ resource "aws_instance" "web" {
   count                  = "${var.asg.enabled ? 0 : 1}"
   ami                    = "${random_id.redhat.keepers.ami_id}"
   instance_type          = "t2.micro"
-  subnet_id              = "${var.subnet_id}"
+  subnet_id              = "${var.subnet_ids[0]}"
 
   user_data              = "${data.template_file.user_data.rendered}" 
   vpc_security_group_ids = ["${aws_security_group.web.id}"]
