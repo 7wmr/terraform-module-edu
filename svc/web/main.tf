@@ -157,7 +157,7 @@ resource "aws_autoscaling_group" "web" {
   count   = "${var.asg.enabled ? 1 : 0}"
   name    = "${var.app.name}-${aws_launch_configuration.web[count.index].name}"
 
-  vpc_zone_identifier        = [ "${var.subnet_ids}" ]
+  vpc_zone_identifier        = "${var.subnet_ids}"
 
   launch_configuration       = "${aws_launch_configuration.web[count.index].id}"
   availability_zones         = "${data.aws_availability_zones.available.names}"
